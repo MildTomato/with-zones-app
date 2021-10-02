@@ -1,17 +1,17 @@
 // @flow
 
-import os from 'os';
-import fs from 'fs';
-import path from 'path';
-import { warning } from '@adeira/js';
+import os from "os";
+import fs from "fs";
+import path from "path";
+import { warning } from "@adeira/js";
 
-import Changeset from './Changeset';
-import addTrackingData from './filters/addTrackingData';
-import { commentLines, uncommentLines } from './filters/conditionalLines';
-import moveDirectories from './filters/moveDirectories';
-import moveDirectoriesReverse from './filters/moveDirectoriesReverse';
-import stripExceptDirectories from './filters/stripExceptDirectories';
-import stripPaths from './filters/stripPaths';
+import Changeset from "./Changeset";
+import addTrackingData from "./filters/addTrackingData";
+import { commentLines, uncommentLines } from "./filters/conditionalLines";
+import moveDirectories from "./filters/moveDirectories";
+import moveDirectoriesReverse from "./filters/moveDirectoriesReverse";
+import stripExceptDirectories from "./filters/stripExceptDirectories";
+import stripPaths from "./filters/stripPaths";
 
 type ChangesetFilter = (Changeset) => Changeset;
 
@@ -30,13 +30,15 @@ export default class ShipitConfig {
     exportedRepoURL: string,
     directoryMapping: Map<string, string>,
     strippedFiles: Set<RegExp>,
-    sourceBranch: string = 'origin/master', // our GitLab CI doesn't have master branch
-    destinationBranch: string = 'master',
+    sourceBranch: string = "origin/master", // our GitLab CI doesn't have master branch
+    destinationBranch: string = "master"
   ) {
     this.sourcePath = sourcePath;
     // This is currently not configurable. We could (should) eventually keep
     // the temp directory, cache it and just update it.
-    this.destinationPath = fs.mkdtempSync(path.join(os.tmpdir(), 'adeira-shipit-'));
+    this.destinationPath = fs.mkdtempSync(
+      path.join(os.tmpdir(), "adeira-shipit-")
+    );
     this.exportedRepoURL = exportedRepoURL;
     this.directoryMapping = directoryMapping;
     this.strippedFiles = strippedFiles;
@@ -47,7 +49,10 @@ export default class ShipitConfig {
   getSourceRoots(): Set<string> {
     const roots = new Set();
     for (const root of this.directoryMapping.keys()) {
-      warning(fs.existsSync(root) === true, `Directory mapping uses non-existent root: ${root}`);
+      warning(
+        fs.existsSync(root) === true,
+        `Directory mapping uses non-existent root: ${root}`
+      );
       roots.add(root);
     }
     return roots;
@@ -72,9 +77,9 @@ export default class ShipitConfig {
       const ch4 = stripPaths(ch3, this.strippedFiles);
 
       // First we comment out lines marked with `@x-shipit-disable`.
-      const ch5 = commentLines(ch4, '@x-shipit-disable', '//', null);
+      const ch5 = commentLines(ch4, "@x-shipit-disable", "//", null);
       // Then we uncomment lines marked with `@x-shipit-enable`.
-      return uncommentLines(ch5, '@x-shipit-enable', '//', null);
+      return uncommentLines(ch5, "@x-shipit-enable", "//", null);
     };
   }
 
@@ -86,9 +91,9 @@ export default class ShipitConfig {
   getDefaultImportitFilter(): ChangesetFilter {
     return (changeset: Changeset) => {
       // Comment out lines which are only for OSS.
-      const ch1 = commentLines(changeset, '@x-shipit-enable', '//', null);
+      const ch1 = commentLines(changeset, "@x-shipit-enable", "//", null);
       // Uncomment private code which is disabled in OSS.
-      const ch2 = uncommentLines(ch1, '@x-shipit-disable', '//', null);
+      const ch2 = uncommentLines(ch1, "@x-shipit-disable", "//", null);
 
       const ch3 = stripPaths(ch2, this.strippedFiles);
       return moveDirectoriesReverse(ch3, this.directoryMapping);
@@ -96,10 +101,12 @@ export default class ShipitConfig {
   }
 
   getSourceBranch(): string {
+    console.log("this.#sourceBranch: ", this.#sourceBranch);
     return this.#sourceBranch;
   }
 
   getDestinationBranch(): string {
+    console.log("this.#destinationBranch: ", this.#destinationBranch);
     return this.#destinationBranch;
   }
 }
