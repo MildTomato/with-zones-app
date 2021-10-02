@@ -31,4 +31,6 @@ jobs:
           chmod 600 ~/.ssh/id_rsa
           ssh-keyscan -H 'github.com' >> ~/.ssh/known_hosts
       - name: Run Shipit
-        run: yarn monorepo-babel-node shipit/bin/shipit.js
+        run: |
+          cd shipit
+          yarn monorepo-babel-node bin/shipit.js
