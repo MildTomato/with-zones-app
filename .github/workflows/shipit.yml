@@ -4,7 +4,6 @@ on:
   push:
     branches:
       - main
-  workflow_dispatch:
 
 env:
   CI: true
@@ -24,8 +23,12 @@ jobs:
         with:
           node-version: 16.x
 
-      - name: Install deps and build (with cache)
-        uses: bahmutov/npm-install@v1
+      - name: Install deps
+        run: |
+          npm install
+          cd shipit
+          npm install
+          cd ../
 
       - name: Prepare Shipit
         run: |
@@ -35,4 +38,4 @@ jobs:
           ssh-keyscan -H 'github.com' >> ~/.ssh/known_hosts
 
       - name: Run Shipit
-        run: yarn babel-node shipit/bin/shipit.js
+        run: npm run shipit
