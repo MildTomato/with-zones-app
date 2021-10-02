@@ -24,9 +24,6 @@ jobs:
           node-version: 16.x
           cache: "yarn"
 
-      - name: Install Yarn dependencies
-        run: yarn install --frozen-lockfile
-
       - name: Prepare Shipit
         run: |
           mkdir -p ~/.ssh
