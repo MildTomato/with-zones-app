@@ -1,12 +1,12 @@
 // @flow strict-local
 
-import fs from 'fs';
-import os from 'os';
-import path from 'path';
-import { ShellCommand } from '@adeira/monorepo-utils';
+import fs from "fs";
+import os from "os";
+import path from "path";
+import { ShellCommand } from "@adeira/monorepo-utils";
 
-import RepoGit from '../RepoGit';
-import ShipitConfig from '../ShipitConfig';
+import RepoGit from "../RepoGit";
+import ShipitConfig from "../ShipitConfig";
 
 /**
  * This phase verifies integrity of the exported repository. This does so by
@@ -20,20 +20,26 @@ import ShipitConfig from '../ShipitConfig';
  * means that either source and destination are out of sync or there is a bug
  * in Shipit project.
  */
-export default function createVerifyRepoPhase(config: ShipitConfig): () => void {
+export default function createVerifyRepoPhase(
+  config: ShipitConfig
+): () => void {
   function createNewEmptyRepo(path: string) {
-    new ShellCommand(path, 'git', 'init').runSynchronously();
+    new ShellCommand(path, "git", "init").runSynchronously();
     const repo = new RepoGit(path);
     repo.configure();
     return repo;
   }
 
   function getDirtyExportedRepoPath() {
-    return fs.mkdtempSync(path.join(os.tmpdir(), 'adeira-shipit-verify-dirty-'));
+    return fs.mkdtempSync(
+      path.join(os.tmpdir(), "adeira-shipit-verify-dirty-")
+    );
   }
 
   function getFilteredExportedRepoPath() {
-    return fs.mkdtempSync(path.join(os.tmpdir(), 'adeira-shipit-verify-filtered-'));
+    return fs.mkdtempSync(
+      path.join(os.tmpdir(), "adeira-shipit-verify-filtered-")
+    );
   }
 
   const monorepoPath = config.sourcePath;
@@ -45,19 +51,27 @@ export default function createVerifyRepoPhase(config: ShipitConfig): () => void 
     const monorepo = new RepoGit(monorepoPath);
     monorepo.export(dirtyExportedRepoPath, config.getSourceRoots());
 
-    new ShellCommand(dirtyExportedRepoPath, 'git', 'add', '.', '--force').runSynchronously();
+    new ShellCommand(
+      dirtyExportedRepoPath,
+      "git",
+      "add",
+      ".",
+      "--force"
+    ).runSynchronously();
 
     new ShellCommand(
       dirtyExportedRepoPath,
-      'git',
-      'commit',
-      '-m',
-      'Initial filtered commit',
+      "git",
+      "commit",
+      "-m",
+      "Initial filtered commit"
     ).runSynchronously();
 
-    const dirtyChangeset = dirtyExportedRepo.getChangesetFromID('HEAD');
+    const dirtyChangeset = dirtyExportedRepo.getChangesetFromID("HEAD");
     const filter = config.getDefaultShipitFilter();
-    const filteredChangeset = filter(dirtyChangeset).withSubject('Initial filtered commit');
+    const filteredChangeset = filter(dirtyChangeset).withSubject(
+      "Initial filtered commit"
+    );
 
     const filteredRepoPath = getFilteredExportedRepoPath();
     const filteredRepo = createNewEmptyRepo(filteredRepoPath);
@@ -65,46 +79,51 @@ export default function createVerifyRepoPhase(config: ShipitConfig): () => void 
 
     new ShellCommand(
       filteredRepoPath,
-      'git',
-      'remote',
-      'add',
-      'shipit_destination',
-      config.destinationPath, // notice we don't use URL here but locally updated repo instead
+      "git",
+      "remote",
+      "add",
+      "shipit_destination",
+      config.destinationPath // notice we don't use URL here but locally updated repo instead
     ).runSynchronously();
 
-    new ShellCommand(filteredRepoPath, 'git', 'fetch', 'shipit_destination').runSynchronously();
+    new ShellCommand(
+      filteredRepoPath,
+      "git",
+      "fetch",
+      "shipit_destination"
+    ).runSynchronously();
 
     const diffStats = new ShellCommand(
       filteredRepoPath,
-      'git',
-      '--no-pager',
-      'diff',
-      '--stat',
-      'HEAD',
-      'shipit_destination/master',
+      "git",
+      "--no-pager",
+      "diff",
+      "--stat",
+      "HEAD",
+      "shipit_destination/main"
     )
       .runSynchronously()
       .getStdout()
       .trim();
 
-    if (diffStats !== '') {
+    if (diffStats !== "") {
       const diff = new ShellCommand(
         filteredRepoPath,
-        'git',
-        'diff',
-        '--full-index',
-        '--binary',
-        '--no-color',
-        'shipit_destination/master',
-        'HEAD',
+        "git",
+        "diff",
+        "--full-index",
+        "--binary",
+        "--no-color",
+        "shipit_destination/main",
+        "HEAD"
       )
         .runSynchronously()
         .getStdout();
       console.error(diff);
-      throw new Error('❌ Repository is out of SYNC!');
+      throw new Error("❌ Repository is out of SYNC!");
     }
   };
 
-  phase.readableName = 'Verify integrity of the repository';
+  phase.readableName = "Verify integrity of the repository";
   return phase;
 }

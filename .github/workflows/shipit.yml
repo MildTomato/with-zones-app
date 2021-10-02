@@ -20,9 +20,12 @@ jobs:
           fetch-depth: 0
 
       - name: Use Node.js 16.x
-        uses: actions/setup-node@v2.4.1
+        uses: actions/setup-node@v1
         with:
           node-version: 16.x
+
+      - name: Install deps and build (with cache)
+        uses: bahmutov/npm-install@v1
 
       - name: Prepare Shipit
         run: |
@@ -30,7 +33,6 @@ jobs:
           echo "${{ secrets.SSH_SHIPIT_PRIVATE_KEY }}" | tr -d '\r' > ~/.ssh/id_rsa
           chmod 600 ~/.ssh/id_rsa
           ssh-keyscan -H 'github.com' >> ~/.ssh/known_hosts
+
       - name: Run Shipit
-        run: |
-          cd shipit
-          yarn bin/monorepo-babel-node.js bin/shipit.js
+        run: yarn babel-node shipit/bin/shipit.js

@@ -9,6 +9,12 @@ module.exports = ({
     };
   },
   getPathMappings() {
-    return new Map([["src/blog/", ""]]);
+    return new Map([["blog/", ""]]);
+  },
+  getBranchConfig() {
+    return {
+      source: "main",
+      destination: "main",
+    };
   },
 }: ConfigType);
