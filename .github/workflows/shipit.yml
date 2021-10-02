@@ -4,6 +4,7 @@ on:
   push:
     branches:
       - main
+  workflow_dispatch:
 
 env:
   CI: true
@@ -24,11 +25,7 @@ jobs:
           node-version: 16.x
 
       - name: Install deps
-        run: |
-          npm install
-          cd shipit
-          npm install
-          cd ../
+        uses: bahmutov/npm-install@v1
 
       - name: Prepare Shipit
         run: |
