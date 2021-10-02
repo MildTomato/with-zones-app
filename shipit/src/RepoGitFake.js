@@ -1,32 +1,34 @@
 // @flow
 
-import fs from 'fs';
-import os from 'os';
-import path from 'path';
-import { ShellCommand } from '@adeira/monorepo-utils';
+import fs from "fs";
+import os from "os";
+import path from "path";
+import { ShellCommand } from "@adeira/monorepo-utils";
 
-import accounts from './accounts';
-import RepoGit from './RepoGit';
+import accounts from "./accounts";
+import RepoGit from "./RepoGit";
 
 export default class RepoGitFake extends RepoGit {
   #testRepoPath: string;
 
   constructor(
-    testRepoPath: string = fs.mkdtempSync(path.join(os.tmpdir(), 'adeira-shipit-tests-')),
+    testRepoPath: string = fs.mkdtempSync(
+      path.join(os.tmpdir(), "supabase-shipit-tests-")
+    )
   ) {
-    new ShellCommand(testRepoPath, 'git', 'init').runSynchronously();
-    const username = 'adeira-shipit-tests';
+    new ShellCommand(testRepoPath, "git", "init").runSynchronously();
+    const username = "supabase-shipit-tests";
     for (const [key, value] of Object.entries({
-      'user.email': accounts.get(username),
-      'user.name': username,
+      "user.email": accounts.get(username),
+      "user.name": username,
     })) {
       new ShellCommand(
         testRepoPath,
-        'git',
-        'config',
+        "git",
+        "config",
         key,
         // $FlowIssue[incompatible-call]: https://github.com/facebook/flow/issues/2174
-        value,
+        value
       ).runSynchronously();
     }
     super(testRepoPath);
@@ -53,7 +55,11 @@ export default class RepoGitFake extends RepoGit {
   }
 
   printFakeRepoHistory(): string {
-    return this._gitCommand('log', '--stat', '--pretty=format:SUBJ: %s%nDESC: %b')
+    return this._gitCommand(
+      "log",
+      "--stat",
+      "--pretty=format:SUBJ: %s%nDESC: %b"
+    )
       .runSynchronously()
       .getStdout()
       .trim();

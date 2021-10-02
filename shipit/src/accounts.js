@@ -1,8 +1,8 @@
 // @flow strict
 
 const availableAccounts: $ReadOnlyMap<string, string> = new Map([
-  ['adeira-github-bot', 'mrtnzlml+adeira-github-bot@gmail.com'],
-  ['adeira-shipit-tests', 'shipit-tests@adeira.dev'],
+  ["supabase-github-bot", "supabase-github-bot@supabase.io"],
+  ["supabase-shipit-tests", "supabase-shipit-tests@supabase.io"],
 ]);
 
 export default availableAccounts;
