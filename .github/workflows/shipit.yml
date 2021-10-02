@@ -27,6 +27,11 @@ jobs:
       - name: Install deps
         uses: bahmutov/npm-install@v1
 
+      - name: Install Shipit deps
+        uses: bahmutov/npm-install@v1
+        with:
+          working-directory: shipit
+
       - name: Prepare Shipit
         run: |
           mkdir -p ~/.ssh
