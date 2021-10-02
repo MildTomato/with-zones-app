@@ -19,6 +19,11 @@ jobs:
           # Number of commits to fetch. 0 indicates all history for all branches and tags (Shipit requires it).
           fetch-depth: 0
 
+      # - name: Setup ssh agent
+      #   uses: webfactory/ssh-agent@v0.5.3
+      #   with:
+      #     ssh-private-key: ${{ secrets.SSH_SHIPIT_PRIVATE_KEY }}
+
       - name: Use Node.js 16.x
         uses: actions/setup-node@v1
         with:
@@ -32,10 +37,12 @@ jobs:
         with:
           working-directory: shipit
 
-      - name: Setup ssh agent
-        uses: webfactory/ssh-agent@v0.5.3
-        with:
-          ssh-private-key: ${{ secrets.SSH_SHIPIT_PRIVATE_KEY }}
+      - name: Prepare Shipit
+        run: |
+          mkdir -p ~/.ssh
+          echo "${{ secrets.SSH_SHIPIT_PRIVATE_KEY }}" | tr -d '\r' > ~/.ssh/id_rsa
+          chmod 600 ~/.ssh/id_rsa
+          ssh-keyscan -H 'github.com' >> ~/.ssh/known_hosts
 
       - name: Run Shipit
         run: npm run shipit
