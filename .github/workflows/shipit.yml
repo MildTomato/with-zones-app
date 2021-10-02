@@ -33,4 +33,4 @@ jobs:
       - name: Run Shipit
         run: |
           cd shipit
-          yarn monorepo-babel-node bin/shipit.js
+          yarn bin/monorepo-babel-node.js bin/shipit.js
