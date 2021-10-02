@@ -37,9 +37,5 @@ jobs:
         with:
           ssh-private-key: ${{ secrets.SSH_SHIPIT_PRIVATE_KEY }}
 
-      - name: Prepare Shipit
-        run: |
-          ssh-keyscan -H 'github.com' >> ~/.ssh/known_hosts
-
       - name: Run Shipit
         run: npm run shipit
