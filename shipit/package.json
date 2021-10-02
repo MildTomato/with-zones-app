@@ -4,6 +4,7 @@
   "license": "MIT",
   "version": "0.0.0",
   "bin": {
+    "monorepo-babel-node": "bin/monorepo-babel-node.js",
     "monorepo-shipit": "bin/shipit.js",
     "monorepo-importit": "bin/importit.js",
     "monorepo-importit-reversed": "bin/importit-reversed.js"
