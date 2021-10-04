@@ -12,12 +12,12 @@ module.exports = ({
     return new Map([
       ["blog/__github__/oss.jsconfig.json", "jsconfig.json"],
       ["blog/", ""],
-      ["common/", "common"],
+      ["common/", "common/"],
     ]);
   },
   getStrippedFiles() {
     return new Set([
-      /^\.jsconfig\.json$/, // replaced by `__github__/oss.jsconfig.json` for OSS
+      /^\jsconfig\.json$/, // replaced by `__github__/oss.jsconfig.json` for OSS
       /__github__/,
     ]);
   },
