@@ -10,16 +10,13 @@ module.exports = ({
   },
   getPathMappings() {
     return new Map([
-      ["blog/__github__/oss.jsconfig.json", "oss.jsconfig.json"],
+      ["blog/__github__/oss.jsconfig.json", "jsconfig.json"],
       ["blog/", ""],
       ["common/", "common/"],
     ]);
   },
   getStrippedFiles() {
-    return new Set([
-      /^\jsconfig\.json$/, // replaced by `__github__/oss.jsconfig.json` for OSS
-      /__github__/,
-    ]);
+    return new Set([/__github__/]);
   },
   getBranchConfig() {
     return {
