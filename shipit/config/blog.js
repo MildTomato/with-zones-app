@@ -10,7 +10,7 @@ module.exports = ({
   },
   getPathMappings() {
     return new Map([
-      ["blog/__github__/oss.jsconfig.json", "jsconfig.json"],
+      ["blog/__github__/oss.jsconfig.json", "oss.jsconfig.json"],
       ["blog/", ""],
       ["common/", "common/"],
     ]);
