@@ -1,10 +1,16 @@
-import Link from 'next/link'
-import dynamic from 'next/dynamic'
-import Image from 'next/image'
+import { useEffect } from "react";
+import Link from "next/link";
+import dynamic from "next/dynamic";
+import Image from "next/image";
+import { myLog } from "@/common/utils";
 
-const Header = dynamic(import('../components/Header'))
+const Header = dynamic(import("../components/Header"));
 
 export default function Home() {
+  useEffect(() => {
+    myLog("Home rendered");
+  }, []);
+
   return (
     <div>
       <Header />
@@ -24,5 +30,5 @@ export default function Home() {
         height={160}
       />
     </div>
-  )
+  );
 }

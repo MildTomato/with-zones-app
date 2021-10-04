@@ -1,7 +1,13 @@
-import Link from 'next/link'
-import Image from 'next/image'
+import { useEffect } from "react";
+import Link from "next/link";
+import Image from "next/image";
+import { myLog } from "@/common/utils";
 
 export default function Blog() {
+  useEffect(() => {
+    myLog("Blog rendered");
+  }, []);
+
   return (
     <div>
       <h3>This is our blog</h3>
@@ -27,5 +33,5 @@ export default function Blog() {
         />
       </div>
     </div>
-  )
+  );
 }
