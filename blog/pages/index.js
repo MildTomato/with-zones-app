@@ -5,7 +5,7 @@ import { myLog } from "@/common/utils";
 
 export default function Blog() {
   useEffect(() => {
-    myLog("Blog rendered");
+    myLog("Blog rendered update name");
   }, []);
 
   return (
