@@ -5,7 +5,7 @@ import type { ConfigType } from "../ConfigType.flow";
 module.exports = ({
   getStaticConfig() {
     return {
-      repository: "git@github.com:phamhieu/with-zones-blog-mirror.git",
+      repository: "git@github.com:mildtomato/with-zones-blog-mirror.git",
     };
   },
   getPathMappings() {

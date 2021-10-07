@@ -72,14 +72,14 @@ Each project has its own configuration directly in Shipit workspace. If you want
 module.exports = {
   getStaticConfig() {
     return {
-      repository: 'git@github.com/adeira/relay-example.git', // see: https://git-scm.com/docs/git-clone/#_git_urls
+      repository: "git@github.com/adeira/relay-example.git", // see: https://git-scm.com/docs/git-clone/#_git_urls
     };
   },
   getPathMappings(): Map<string, string> {
     return new Map([
-      ['src/example-relay/__github__/.circleci', '.circleci'],
-      ['src/example-relay/__github__/.flowconfig', '.flowconfig'],
-      ['src/example-relay/', ''],
+      ["src/example-relay/__github__/.circleci", ".circleci"],
+      ["src/example-relay/__github__/.flowconfig", ".flowconfig"],
+      ["src/example-relay/", ""],
     ]);
   },
   getStrippedFiles(): Set<RegExp> {
@@ -108,8 +108,8 @@ Order of these filters is significant and has one important implication: it's no
 module.exports = {
   getPathMappings() {
     return new Map([
-      ['src/example/__github__/.babelrc.js', '.babelrc.js'],
-      ['src/example/', ''],
+      ["src/example/__github__/.babelrc.js", ".babelrc.js"],
+      ["src/example/", ""],
     ]);
   },
   getStrippedFiles() {
@@ -132,7 +132,7 @@ This filter maps our internal directories to exported directories and vice versa
 ```js
 new Map([
   // from, to
-  ['src/fetch/', ''],
+  ["src/fetch/", ""],
 ]);
 ```
 
@@ -140,8 +140,8 @@ This maps all the files from our [fetch](https://github.com/adeira/universe/tree
 
 ```js
 new Map([
-  ['src/fetch/__github__/', ''], // trailing slash is significant
-  ['src/fetch/', ''],
+  ["src/fetch/__github__/", ""], // trailing slash is significant
+  ["src/fetch/", ""],
 ]);
 ```
 
@@ -150,7 +150,7 @@ This mapping moves all the files from `__github__` to the root. There are two th
 And finally this is how you'd map your package to the subfolder on GitHub (good for shipping from our monorepo to different monorepo or when you are avoiding previously mentioned irreversibility):
 
 ```js
-new Map([['src/packages/fetch/', 'packages/fetch/']]);
+new Map([["src/packages/fetch/", "packages/fetch/"]]);
 ```
 
 ### Filter of conditional comments (`commentLines`)
@@ -160,7 +160,7 @@ This filter is handy when you need to enable or disable some lines when exportin
 ```js
 someFunctionCallWithDifferentOSSRepresentation(
   // @x-oss-enable: true,
-  false, // @x-oss-disable
+  false // @x-oss-disable
 );
 ```
 
@@ -168,7 +168,7 @@ The code above is written by our programmer. Shipit then automatically turns thi
 
 ```js
 someFunctionCallWithDifferentOSSRepresentation(
-  true, // @x-oss-enable
+  true // @x-oss-enable
   // @x-oss-disable: false,
 );
 ```
@@ -183,8 +183,8 @@ It's fairly straightforward to rename things inside your specified root and ship
 module.exports = {
   getPathMappings(): Map<string, string> {
     return new Map([
-      ['src/path-old/', ''],
-      ['src/path-new/', ''], // add a new root here, keep the old one as well
+      ["src/path-old/", ""],
+      ["src/path-new/", ""], // add a new root here, keep the old one as well
     ]);
   },
 };
